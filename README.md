@@ -1,4 +1,6 @@
 # [Project Name: e.g., Retail Sales Forecasting]
+test_change
+other_branch_change
 
 **Author:** TODO_STUDENT (Your Group Name or number)  
 **Course:** MLOps: Master in Business Analytics and Data Sciense
@@ -79,7 +81,7 @@ This project follows a strict separation between "Sandbox" (Notebooks) and "Prod
 
 The full machine learning pipeline will eventually be executable through:
 
-`python src/main.py`
+`python -m src.main`
 
 
 
