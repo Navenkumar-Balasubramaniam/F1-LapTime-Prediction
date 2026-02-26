@@ -50,3 +50,9 @@ reports/**
 # Python cache
 __pycache__/
 *.pyc
+
+# Conda / installers / local environment stuff
+Miniconda3-latest-Linux-x86_64.sh
+miniconda3/
+*.conda
+
