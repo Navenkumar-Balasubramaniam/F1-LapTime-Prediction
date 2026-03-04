@@ -295,10 +295,10 @@ python -m src.main
 
 This will execute the full workflow:
 
-1. Data loading and validation
-2. Data cleaning and feature engineering
-3. Model training and evaluation
-4. Prediction generation
+    1. Data loading and validation
+    2. Data cleaning and feature engineering
+    3. Model training and evaluation
+    4. Prediction generation
 Outputs (e.g., predictions.csv) will be saved in the reports/ directory.
 
 4. Run Unit Tests
