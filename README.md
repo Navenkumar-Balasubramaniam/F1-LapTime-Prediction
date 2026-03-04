@@ -230,43 +230,81 @@ It does NOT contain:
 ## 11. Repository Structure
 
 This project follows a strict separation between **Sandbox (Notebooks)** and **Production (Src)**.
-
-.
-├── README.md                # This file (Project definition)
-├── environment.yml          # Dependencies (Conda/Pip)
-├── config.yaml              # Global configuration (paths, params)
-├── .env                     # Secrets placeholder
-│
-├── notebooks/               # Experimental sandbox
-│   └── yourbaseline.ipynb   # From previous work
-│
-├── src/                     # Production code (The "Factory")
-│   ├── __init__.py          # Python package
-│   ├── load_data.py         # Ingest raw data
-│   ├── clean_data.py        # Preprocessing & cleaning
-│   ├── features.py          # Feature engineering
-│   ├── validate.py          # Data quality checks
-│   ├── train.py             # Model training & saving
-│   ├── evaluate.py          # Metrics & plotting
-│   ├── infer.py             # Inference logic
-│   └── main.py              # Pipeline orchestrator
-│
-├── data/                    # Local storage (IGNORED by Git)
-│   ├── raw/                 # Immutable input data
-│   └── processed/           # Cleaned data ready for training
-│
-├── models/                  # Serialized artifacts (IGNORED by Git)
-│
-├── reports/                 # Generated metrics, plots, and figures
-│
-└── tests/                   # Automated tests
 ```
+.
+├── README.md ## Project overview, business bjective, success metrics
+├── LICENSE # License information
+├── .gitignore # Git ignore rules
+├── environment.yml # Conda environment definition (mlops-student-env)
+├── config.yaml # Global configuration (paths, params, settings)
+├── pytest.ini # Pytest configuration
+├── notebooks/ # Exploration / prototyping notebooks
+│ └── ML_Group7_Final_MLOPS.ipynb
+├── src/ # Production pipeline code (reusable modules)
+│ ├── init.py
+│ ├── main.py # Orchestrates the full pipeline (entry point)
+│ ├── load_data.py # Data ingestion / loading
+│ ├── clean_data.py # Data cleaning / preprocessing
+│ ├── validate.py # Data validation checks
+│ ├── features.py # Feature engineering
+│ ├── train.py # Model training
+│ ├── evaluate.py # Model evaluation + metrics
+│ ├── infer.py # Inference / prediction generation
+│ └── utils.py # Shared helper functions
+├── tests/ # Unit tests for src/ modules
+│ ├── init.py
+│ ├── test_load_data.py
+│ ├── test_clean_data.py
+│ ├── test_validate.py
+│ ├── test_features.py
+│ ├── test_train.py
+│ ├── test_evaluate.py
+│ ├── test_infer.py
+│ ├── test_utils.py
+│ └── test_main.py
+├── reports/ # Outputs and generated artifacts for reporting
+│ ├── .gitkeep
+│ └── predictions.csv
+└── .pytest_cache/ # Local pytest cache (can be ignored in git)
+```
+### Notes
+- `src/` contains the reproducible pipeline (the code you can run end-to-end).
+- `notebooks/` is for exploration; important logic should be migrated into `src/`.
+- `reports/` is where prediction outputs and evaluation artifacts should live.
 
 ## 12. Execution Model
 
-The full machine learning pipeline will eventually be executable through:
+1. Clone the Repository
+```
+git clone <your-repo-url>
+cd 1-mlops-kickoff-repo
+```
 
-`python -m src.main`
+2. Create and Activate the Conda Environment
+```
+conda env create -f environment.yml
+conda activate mlops-student-env
+```
+
+3. Run the Full Pipeline
+
+From the project root:
+```
+python -m src.main
+```
+
+This will execute the full workflow:
+
+1. Data loading and validation
+2. Data cleaning and feature engineering
+3. Model training and evaluation
+4. Prediction generation
+Outputs (e.g., predictions.csv) will be saved in the reports/ directory.
+
+4. Run Unit Tests
+```
+pytest
+```
 
 
 
