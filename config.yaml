@@ -1,10 +1,90 @@
 # MLOps Project Configuration
 # This file will eventually control paths, hyperparameters, and toggles.
+# Central pipeline configuration (YAML)
+# This file is meant to be the single place you adjust paths, targets, and feature lists.
 
 data:
-  raw: "data/raw/dataset.csv"
-  processed: "data/processed/clean.csv"
+  raw_path: "data/raw/f1_all.parquet"
+  processed_path: "data/processed/clean.csv"
 
-train:
-  test_size: 0.2
-  seed: 42
+artifacts:
+  model_path: "models/model.joblib"
+  predictions_path: "reports/predictions.csv"
+
+task:
+  # Use: "regression" or "classification"
+  problem_type: "regression"
+  # Set this to your real target column name from the notebook
+  target_column: "milliseconds"
+  year_column: "year"
+  test_year: 2023
+
+features:
+  # StandardScaler will be applied to ALL numeric listed here
+  numeric_passthrough:
+    - lap
+    - grid
+    - Stint
+    - TyreLife
+    - TrackTemp
+    - Humidity
+    - Pressure
+    - Rainfall
+    - WindSpeed
+    - WindDirection
+
+# OneHotEncoder(drop="first", handle_unknown="ignore")
+  categorical_onehot:
+    - round
+    - name
+    - constructorId
+    - code
+    - Compound
+    - FreshTyre
+
+cleaning:
+  # Notebook-aligned cleaning settings
+  dropna_subset:
+    - TyreLife
+    - milliseconds
+
+# Leakage + ID columns to drop (exists in your parquet)
+  drop_columns:
+    - Driver
+    - LapNumber
+    - time
+    - circuitId
+    - driverId
+    - statusId
+    - raceId
+    - position_x
+    - position_y
+    - status
+    - AirTemp
+
+training:
+  random_state: 42
+
+  regression:
+    use_lasso_feature_selection: true
+
+    lasso:
+      cv: 5
+      n_alphas: 100
+      max_iter: 20000
+      threshold: 0.0
+
+    linear_regression:
+      # sklearn LinearRegression params
+      fit_intercept: true
+      n_jobs: null
+      positive: false
+
+  classification:
+    logistic_regression:
+      max_iter: 500
+      C: 1.0
+      solver: "lbfgs"
+
+
+
