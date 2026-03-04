@@ -37,8 +37,6 @@ def run_inference(model, X_infer: pd.DataFrame) -> pd.DataFrame:
     # TODO_STUDENT: Add post-processing (rounding, clipping, inverse transforms).
     # Why: Many business systems require bounded or formatted outputs.
     #
-    # Placeholder (Remove this after implementing your code):
-    print("Warning: Student has not implemented this section yet")
     # --------------------------------------------------------
     # END STUDENT CODE
     # --------------------------------------------------------
