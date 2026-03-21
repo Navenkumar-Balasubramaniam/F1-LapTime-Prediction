@@ -1,7 +1,7 @@
 # MLOps Project Configuration
-# This file will eventually control paths, hyperparameters, and toggles.
 # Central pipeline configuration (YAML)
-# This file is meant to be the single place you adjust paths, targets, and feature lists.
+# This file is meant to be the single place you adjust paths, targets, feature lists,
+# model search settings, logging, and experiment tracking options.
 
 data:
   raw_path: "data/raw/f1_all.parquet"
@@ -14,7 +14,6 @@ artifacts:
 task:
   # Use: "regression" or "classification"
   problem_type: "regression"
-  # Set this to your real target column name from the notebook
   target_column: "milliseconds"
   year_column: "year"
   test_year: 2023
@@ -33,7 +32,7 @@ features:
     - WindSpeed
     - WindDirection
 
-# OneHotEncoder(drop="first", handle_unknown="ignore")
+  # OneHotEncoder(drop="first", handle_unknown="ignore")
   categorical_onehot:
     - round
     - name
@@ -48,7 +47,7 @@ cleaning:
     - TyreLife
     - milliseconds
 
-# Leakage + ID columns to drop (exists in your parquet)
+  # Leakage + ID columns to drop (exists in your parquet)
   drop_columns:
     - Driver
     - LapNumber
@@ -62,10 +61,18 @@ cleaning:
     - status
     - AirTemp
 
+logging:
+  level: "INFO"
+  file_path: "logs/pipeline.log"
+
 training:
   random_state: 42
 
   regression:
+    # Cross-validation folds used for model comparison and grid search.
+    cv_folds: 5
+
+    # Keep feature selection enabled for the linear baseline only.
     use_lasso_feature_selection: true
 
     lasso:
@@ -75,10 +82,20 @@ training:
       threshold: 0.0
 
     linear_regression:
-      # sklearn LinearRegression params
       fit_intercept: true
       n_jobs: null
       positive: false
+
+    random_forest:
+      enabled: true
+      cv: 2
+      n_jobs: 1
+      grid_search_n_jobs: 1
+      param_grid:
+        model__n_estimators: [50]
+        model__max_depth: [3,5]
+        model__min_samples_split: [5,7]
+        model__min_samples_leaf: [5,7]
 
   classification:
     logistic_regression:
@@ -86,5 +103,28 @@ training:
       C: 1.0
       solver: "lbfgs"
 
+wandb:
+  enabled: true
+  project: "mlops-kickoff"
 
+  # These variable names are read from your .env file.
+  api_key_env: "WANDB_API_KEY"
+  entity_env: "WANDB_ENTITY"
 
+  watch_paths:
+    reports_dir: "reports"
+
+  # Optional sweep configuration for Random Forest.
+  # Run it explicitly from Python when you want a dedicated sweep job.
+  sweep:
+    method: "grid"
+    count: 8
+    parameters:
+      n_estimators:
+        values: [100, 200]
+      max_depth:
+        values: [null, 10, 20]
+      min_samples_split:
+        values: [2, 5]
+      min_samples_leaf:
+        values: [1, 2]

@@ -3,6 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 import pandas as pd
 
+from src.logging import get_logger
+
+logger = get_logger(__name__)
+
 """
 Module: Data Loader
 -------------------
@@ -50,8 +54,10 @@ def load_raw_data(raw_data_path: Path) -> pd.DataFrame:
         If parquet engine is missing.
     """
     raw_data_path = Path(raw_data_path)
+    logger.info("Loading raw data from %s", raw_data_path)
 
     if not raw_data_path.exists():
+        logger.error("Raw data file not found at %s", raw_data_path)
         raise FileNotFoundError(
             f"Raw data file not found at: {raw_data_path}\n"
             "Expected a local parquet file. Ensure it exists and is available."
@@ -63,13 +69,17 @@ def load_raw_data(raw_data_path: Path) -> pd.DataFrame:
         try:
             df = pd.read_parquet(raw_data_path)
         except ImportError as e:
+            logger.exception("Parquet engine missing while trying to read %s", raw_data_path)
             raise ImportError(
                 "Parquet support requires a parquet engine.\n"
                 "Install one of: pyarrow (recommended) or fastparquet.\n"
                 "Example: conda install -c conda-forge pyarrow"
             ) from e
+
+        logger.info("Loaded raw dataframe with shape=%s", df.shape)
         return df
 
+    logger.error("Unsupported raw data format encountered: %s", suffix)
     raise ValueError(
         f"Unsupported raw data format: '{suffix}'. "
         "This pipeline currently supports: .parquet"

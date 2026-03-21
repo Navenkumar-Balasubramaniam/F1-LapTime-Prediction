@@ -5,8 +5,8 @@ Educational Goal:
 - Responsibility (separation of concerns): Reading/writing CSVs and models only; no ML logic.
 - Pipeline contract (inputs and outputs): Read/Write DataFrames and joblib model artifacts.
 
-TODO: Replace print statements with standard library logging in a later session
-TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
+This version uses logging instead of print to make artifact I/O visible in both
+console output and persisted run logs.
 """
 from __future__ import annotations
 
@@ -15,6 +15,10 @@ from typing import Any
 
 import joblib
 import pandas as pd
+
+from src.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 def load_csv(filepath: Path) -> pd.DataFrame:
@@ -26,21 +30,8 @@ def load_csv(filepath: Path) -> pd.DataFrame:
     Why this contract matters for reliable ML delivery:
     - Centralizing CSV reading makes it easy to add parsing options, compression, or schema checks later.
     """
-    print(f"[utils.load_csv] Loading CSV from: {filepath}")  # TODO: replace with logging later
+    logger.info("Loading CSV from %s", filepath)
     df = pd.read_csv(filepath)
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # TODO_STUDENT: If your data requires custom parsing (date columns, separators, encoding),
-    # add those parameters here. Why: Real datasets often require non-default read_csv args.
-    #
-    # Optional forcing function (leave commented)
-    # raise NotImplementedError("Student: You must implement this logic to proceed!")
-    #
-    # Placeholder: nothing required for baseline
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
     return df
 
 
@@ -54,20 +45,11 @@ def save_csv(df: pd.DataFrame, filepath: Path) -> None:
     Why this contract matters for reliable ML delivery:
     - Ensures parent dirs exist and all CSV writes use a consistent default (index=False).
     """
-    print(f"[utils.save_csv] Saving DataFrame to: {filepath}")  # TODO: replace with logging later
+    logger.info("Saving DataFrame to %s", filepath)
+    filepath = Path(filepath)
     filepath.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(filepath, index=False)
 
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # TODO_STUDENT: If you want different CSV options (compression, quoting, float_format),
-    # change them here. Why: Large datasets often need compression or specific float formats.
-    #
-    # Placeholder: baseline uses index=False
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
 
 
 def save_model(model: Any, filepath: Path) -> None:
@@ -80,20 +62,11 @@ def save_model(model: Any, filepath: Path) -> None:
     Why this contract matters for reliable ML delivery:
     - Having a single model save function makes it trivial to swap serialization formats later.
     """
-    print(f"[utils.save_model] Saving model to: {filepath}")  # TODO: replace with logging later
+    logger.info("Saving model to %s", filepath)
+    filepath = Path(filepath)
     filepath.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, filepath)
 
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # TODO_STUDENT: Consider adding metadata (config, timestamp, metrics) alongside the model.
-    # Why: Experiments are reproducible when artifact metadata is stored.
-    #
-    # Placeholder: baseline saves the raw joblib file only
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
 
 
 def load_model(filepath: Path):
@@ -105,14 +78,5 @@ def load_model(filepath: Path):
     Why this contract matters for reliable ML delivery:
     - Centralized model loading ensures consistent behavior across evaluation and inference scripts.
     """
-    print(f"[utils.load_model] Loading model from: {filepath}")  # TODO: replace with logging later
+    logger.info("Loading model from %s", filepath)
     return joblib.load(filepath)
-
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # TODO_STUDENT: Add validation of model's expected attributes (e.g., predict) if desired.
-    # Why: Early failure helps diagnose mismatched pipelines or corrupted artifacts.
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------

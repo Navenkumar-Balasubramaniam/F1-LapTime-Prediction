@@ -1,0 +1,17 @@
+{"time":"2026-03-21T21:41:24.580740715+01:00","level":"INFO","msg":"wandb-core"}
+{"time":"2026-03-21T21:41:24.59502788+01:00","level":"INFO","msg":"stream: starting","core version":"0.25.1"}
+{"time":"2026-03-21T21:41:24.947326151+01:00","level":"INFO","msg":"stream: created new stream","id":"pq95cwiu"}
+{"time":"2026-03-21T21:41:24.949245478+01:00","level":"INFO","msg":"handler: started"}
+{"time":"2026-03-21T21:41:24.961127436+01:00","level":"INFO","msg":"stream: started"}
+{"time":"2026-03-21T21:41:24.961765196+01:00","level":"INFO","msg":"writer: started","stream_id":"pq95cwiu"}
+{"time":"2026-03-21T21:41:24.961998629+01:00","level":"INFO","msg":"sender: started"}
+{"time":"2026-03-21T21:41:25.106661829+01:00","level":"ERROR","msg":"api: HTTP error","status":404,"method":"POST","url":"https://api.wandb.ai/graphql"}
+{"time":"2026-03-21T21:41:25.107779451+01:00","level":"ERROR","msg":"runupserter: failed to init run","error":"returned error 404: {\"data\":{\"upsertBucket\":null},\"errors\":[{\"message\":\"entity Navenkumar Balasubramaniam not found during upsertBucket\",\"path\":[\"upsertBucket\"]}]}"}
+{"time":"2026-03-21T21:41:25.142864043+01:00","level":"INFO","msg":"stream: closing"}
+{"time":"2026-03-21T21:41:25.148150562+01:00","level":"ERROR","msg":"sender: uploadConfigFile: runhandle: run not yet initialized"}
+{"time":"2026-03-21T21:41:25.15101366+01:00","level":"ERROR","msg":"runfiles: runhandle: run not yet initialized"}
+{"time":"2026-03-21T21:41:25.155938163+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-03-21T21:41:25.156408522+01:00","level":"INFO","msg":"handler: closed"}
+{"time":"2026-03-21T21:41:25.1592932+01:00","level":"INFO","msg":"sender: closed"}
+{"time":"2026-03-21T21:41:25.159646608+01:00","level":"INFO","msg":"stream: closed"}
+{"time":"2026-03-21T21:41:25.16148827+01:00","level":"ERROR","msg":"stream: runURL: runhandle: run not yet initialized"}

@@ -1,0 +1,579 @@
+2026-03-21 21:08:34 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:08:34 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:08:34 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:08:34 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:08:34 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:08:34 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:08:34 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:08:34 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:08:34 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:08:34 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:08:34 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:08:34 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:08:34 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:08:35 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:08:35 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:08:35 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:08:35 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:08:35 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:08:35 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:08:35 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:08:41 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 21:12:14 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:12:14 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:12:14 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:12:14 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:12:14 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:12:14 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:12:14 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:12:14 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:12:14 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:12:14 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:12:14 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:12:14 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:12:14 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:12:14 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:12:14 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:12:14 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:12:14 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:12:14 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:12:14 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:12:14 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:12:22 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 21:21:58 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:21:58 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:21:58 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:21:58 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:21:58 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:21:58 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:21:58 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:21:58 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:21:58 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:21:58 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:21:58 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:21:58 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:21:58 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:21:58 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:21:58 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:21:58 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:21:58 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:21:58 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:21:58 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:21:58 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:22:07 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 21:26:05 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:26:05 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:26:05 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:26:05 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:26:05 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:26:05 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:26:05 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:26:06 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:26:06 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:26:06 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:26:06 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:26:06 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:26:06 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:26:06 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:26:06 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:26:06 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:26:06 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:26:06 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:26:06 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:26:06 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:26:15 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 21:32:42 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:32:42 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:32:42 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:32:42 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:32:42 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:32:42 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:32:42 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:32:42 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:32:42 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:32:42 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:32:42 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:32:42 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:32:42 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:32:43 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:32:43 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:32:43 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:32:43 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:32:43 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:32:43 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:32:43 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:32:51 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 21:40:05 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:40:05 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:40:05 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:40:05 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:40:05 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:40:05 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:40:05 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:40:05 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:40:05 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:40:05 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:40:05 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:40:05 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:40:05 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:40:06 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:40:06 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:40:06 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:40:06 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:40:06 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:40:06 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 21:40:06 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 21:40:06 | INFO | src.evaluate | Regression metrics | RMSE=11959.1178 | MAE=9865.5784 | R2=-0.0006
+2026-03-21 21:40:06 | INFO | src.main | Final score returned (single float)=11959.1178
+2026-03-21 21:40:06 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 21:40:06 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 21:40:06 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 21:40:06 | INFO | src.main | Train R2=0.0000 | Test R2=-0.0006
+2026-03-21 21:40:06 | INFO | src.main | Pipeline completed successfully.
+2026-03-21 21:40:27 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:40:27 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:40:27 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:40:27 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:40:27 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:40:27 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:40:27 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:40:27 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:40:27 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:40:27 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:40:27 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:40:27 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:40:27 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:40:27 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:40:27 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:40:27 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:40:28 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:40:28 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:40:28 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 21:40:28 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 21:40:28 | INFO | src.evaluate | Regression metrics | RMSE=11959.1178 | MAE=9865.5784 | R2=-0.0006
+2026-03-21 21:40:28 | INFO | src.main | Final score returned (single float)=11959.1178
+2026-03-21 21:40:28 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 21:40:28 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 21:40:28 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 21:40:28 | INFO | src.main | Train R2=0.0000 | Test R2=-0.0006
+2026-03-21 21:40:28 | INFO | src.main | Pipeline completed successfully.
+2026-03-21 21:40:28 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:40:28 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 21:40:28 | INFO | src.train | Training model pipeline for problem_type=classification
+2026-03-21 21:40:28 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:40:28 | INFO | src.train | Classification pipeline trained with LogisticRegression.
+2026-03-21 21:40:28 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:40:28 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 21:40:28 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:40:28 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=Navenkumar Balasubramaniam | job_type=train
+2026-03-21 21:40:29 | INFO | src.train | Linear Regression CV RMSE=-0.0709
+2026-03-21 21:40:36 | INFO | src.train | Random Forest best CV RMSE=0.3133 with params={'model__max_depth': None, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 200}
+2026-03-21 21:40:36 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=-0.0709
+2026-03-21 21:40:36 | INFO | src.utils | Saving DataFrame to /tmp/pytest-of-naven/pytest-0/test_save_csv_creates_parent_d0/nested/dir/data.csv
+2026-03-21 21:40:36 | INFO | src.utils | Loading CSV from /tmp/pytest-of-naven/pytest-0/test_load_csv_reads_expected_d0/input.csv
+2026-03-21 21:40:36 | INFO | src.utils | Saving model to /tmp/pytest-of-naven/pytest-0/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 21:40:36 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-0/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 21:40:36 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-0/test_load_model_raises_if_miss0/does_not_exist.joblib
+2026-03-21 21:40:36 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 21:40:36 | INFO | src.validate | Validation passed for required columns=['a', 'b']
+2026-03-21 21:40:36 | INFO | src.validate | Validating dataframe with shape=(2, 1)
+2026-03-21 21:40:36 | ERROR | src.validate | Validation failed: missing required columns=['b']
+2026-03-21 21:40:36 | INFO | src.validate | Validating dataframe with shape=(0, 0)
+2026-03-21 21:40:36 | ERROR | src.validate | Validation failed: dataframe is empty. Cannot proceed.
+2026-03-21 21:40:36 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 21:40:36 | ERROR | src.validate | Validation failed: required columns entirely null=['a']
+2026-03-21 21:41:22 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:41:22 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 21:43:03 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:43:03 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 21:58:47 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:58:47 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 21:58:47 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 21:58:47 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 21:58:47 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 21:58:47 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 21:58:47 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 21:58:47 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 21:58:47 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 21:58:47 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 21:58:47 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 21:58:47 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 21:58:47 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 21:58:48 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 21:58:48 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 21:58:48 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 21:58:48 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:58:48 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 21:58:48 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 21:58:48 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 21:58:48 | INFO | src.evaluate | Regression metrics | RMSE=11959.1178 | MAE=9865.5784 | R2=-0.0006
+2026-03-21 21:58:48 | INFO | src.main | Final score returned (single float)=11959.1178
+2026-03-21 21:58:48 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 21:58:48 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 21:58:48 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 21:58:48 | INFO | src.main | Train R2=0.0000 | Test R2=-0.0006
+2026-03-21 21:58:49 | INFO | src.main | Pipeline completed successfully.
+2026-03-21 21:58:49 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:58:49 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 21:58:49 | INFO | src.train | Training model pipeline for problem_type=classification
+2026-03-21 21:58:49 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b | job_type=train
+2026-03-21 21:58:49 | INFO | src.train | Classification pipeline trained with LogisticRegression.
+2026-03-21 21:58:49 | INFO | src.features | Building feature preprocessor.
+2026-03-21 21:58:49 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 21:58:49 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 21:58:49 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b | job_type=train
+2026-03-21 21:58:49 | INFO | src.train | Linear Regression CV RMSE=-0.0709
+2026-03-21 21:58:58 | INFO | src.train | Random Forest best CV RMSE=0.3133 with params={'model__max_depth': 20, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 200}
+2026-03-21 21:58:58 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=-0.0709
+2026-03-21 21:58:58 | INFO | src.utils | Saving DataFrame to /tmp/pytest-of-naven/pytest-1/test_save_csv_creates_parent_d0/nested/dir/data.csv
+2026-03-21 21:58:58 | INFO | src.utils | Loading CSV from /tmp/pytest-of-naven/pytest-1/test_load_csv_reads_expected_d0/input.csv
+2026-03-21 21:58:58 | INFO | src.utils | Saving model to /tmp/pytest-of-naven/pytest-1/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 21:58:58 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-1/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 21:58:58 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-1/test_load_model_raises_if_miss0/does_not_exist.joblib
+2026-03-21 21:58:58 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 21:58:58 | INFO | src.validate | Validation passed for required columns=['a', 'b']
+2026-03-21 21:58:58 | INFO | src.validate | Validating dataframe with shape=(2, 1)
+2026-03-21 21:58:58 | ERROR | src.validate | Validation failed: missing required columns=['b']
+2026-03-21 21:58:58 | INFO | src.validate | Validating dataframe with shape=(0, 0)
+2026-03-21 21:58:58 | ERROR | src.validate | Validation failed: dataframe is empty. Cannot proceed.
+2026-03-21 21:58:58 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 21:58:58 | ERROR | src.validate | Validation failed: required columns entirely null=['a']
+2026-03-21 21:59:33 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 21:59:33 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 22:15:57 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:15:57 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 22:15:59 | INFO | __main__ | Started pipeline W&B run.
+2026-03-21 22:15:59 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:15:59 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:15:59 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:15:59 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:15:59 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:15:59 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:15:59 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:15:59 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:15:59 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:15:59 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:16:00 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:16:00 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:16:00 | INFO | __main__ | Using year split: train < 2023, test == 2023
+2026-03-21 22:16:00 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:16:00 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:16:00 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:16:01 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:16:09 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 22:38:51 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:38:51 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 22:38:51 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 22:38:51 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:38:51 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:38:51 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:38:51 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:38:51 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:38:51 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:38:51 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:38:51 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:38:51 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:38:51 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:38:52 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:38:52 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:38:52 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 22:38:52 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:38:52 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:38:52 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 22:38:52 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 22:38:52 | INFO | src.evaluate | Regression metrics | RMSE=11959.1178 | MAE=9865.5784 | R2=-0.0006
+2026-03-21 22:38:52 | INFO | src.main | Final score returned (single float)=11959.1178
+2026-03-21 22:38:52 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 22:38:52 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 22:38:52 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 22:38:52 | INFO | src.main | Train R2=0.0000 | Test R2=-0.0006
+2026-03-21 22:38:52 | INFO | src.main | Pipeline completed successfully.
+2026-03-21 22:38:53 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:38:53 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:38:53 | INFO | src.train | Training model pipeline for problem_type=classification
+2026-03-21 22:38:53 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:38:53 | INFO | src.train | Classification pipeline trained with LogisticRegression.
+2026-03-21 22:38:53 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:38:53 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:38:53 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:38:53 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:38:53 | INFO | src.train | Linear Regression CV RMSE=-0.0709
+2026-03-21 22:38:53 | INFO | src.train | Random Forest best CV RMSE=0.3273 with params={'model__max_depth': 10, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 50}
+2026-03-21 22:38:53 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=-0.0709
+2026-03-21 22:38:53 | INFO | src.utils | Saving DataFrame to /tmp/pytest-of-naven/pytest-0/test_save_csv_creates_parent_d0/nested/dir/data.csv
+2026-03-21 22:38:53 | INFO | src.utils | Loading CSV from /tmp/pytest-of-naven/pytest-0/test_load_csv_reads_expected_d0/input.csv
+2026-03-21 22:38:53 | INFO | src.utils | Saving model to /tmp/pytest-of-naven/pytest-0/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:38:53 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-0/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:38:53 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-0/test_load_model_raises_if_miss0/does_not_exist.joblib
+2026-03-21 22:38:53 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:38:53 | INFO | src.validate | Validation passed for required columns=['a', 'b']
+2026-03-21 22:38:53 | INFO | src.validate | Validating dataframe with shape=(2, 1)
+2026-03-21 22:38:53 | ERROR | src.validate | Validation failed: missing required columns=['b']
+2026-03-21 22:38:53 | INFO | src.validate | Validating dataframe with shape=(0, 0)
+2026-03-21 22:38:53 | ERROR | src.validate | Validation failed: dataframe is empty. Cannot proceed.
+2026-03-21 22:38:53 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:38:53 | ERROR | src.validate | Validation failed: required columns entirely null=['a']
+2026-03-21 22:39:05 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:39:05 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 22:39:06 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 22:39:06 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:39:06 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:39:06 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:39:06 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:39:06 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:39:06 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:39:06 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:39:06 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:39:06 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:39:06 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:39:06 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:39:06 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:39:06 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 22:39:06 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:39:06 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:39:06 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 22:39:06 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 22:39:06 | INFO | src.evaluate | Regression metrics | RMSE=11959.1178 | MAE=9865.5784 | R2=-0.0006
+2026-03-21 22:39:06 | INFO | src.main | Final score returned (single float)=11959.1178
+2026-03-21 22:39:06 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 22:39:06 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 22:39:06 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 22:39:07 | INFO | src.main | Train R2=0.0000 | Test R2=-0.0006
+2026-03-21 22:39:07 | INFO | src.main | Pipeline completed successfully.
+2026-03-21 22:39:07 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:39:07 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:39:07 | INFO | src.train | Training model pipeline for problem_type=classification
+2026-03-21 22:39:07 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:39:07 | INFO | src.train | Classification pipeline trained with LogisticRegression.
+2026-03-21 22:39:07 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:39:07 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:39:07 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:39:07 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:39:07 | INFO | src.train | Linear Regression CV RMSE=-0.0709
+2026-03-21 22:39:08 | INFO | src.train | Random Forest best CV RMSE=0.3273 with params={'model__max_depth': 10, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 50}
+2026-03-21 22:39:08 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=-0.0709
+2026-03-21 22:39:08 | INFO | src.utils | Saving DataFrame to /tmp/pytest-of-naven/pytest-1/test_save_csv_creates_parent_d0/nested/dir/data.csv
+2026-03-21 22:39:08 | INFO | src.utils | Loading CSV from /tmp/pytest-of-naven/pytest-1/test_load_csv_reads_expected_d0/input.csv
+2026-03-21 22:39:08 | INFO | src.utils | Saving model to /tmp/pytest-of-naven/pytest-1/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:39:08 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-1/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:39:08 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-1/test_load_model_raises_if_miss0/does_not_exist.joblib
+2026-03-21 22:39:08 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:39:08 | INFO | src.validate | Validation passed for required columns=['a', 'b']
+2026-03-21 22:39:08 | INFO | src.validate | Validating dataframe with shape=(2, 1)
+2026-03-21 22:39:08 | ERROR | src.validate | Validation failed: missing required columns=['b']
+2026-03-21 22:39:08 | INFO | src.validate | Validating dataframe with shape=(0, 0)
+2026-03-21 22:39:08 | ERROR | src.validate | Validation failed: dataframe is empty. Cannot proceed.
+2026-03-21 22:39:08 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:39:08 | ERROR | src.validate | Validation failed: required columns entirely null=['a']
+2026-03-21 22:39:14 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:39:14 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 22:39:15 | INFO | __main__ | Started pipeline W&B run.
+2026-03-21 22:39:15 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:39:15 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:39:15 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:39:15 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:39:15 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:39:15 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:39:15 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:39:15 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:39:15 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:39:15 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:39:16 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:39:16 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:39:16 | INFO | __main__ | Using year split: train < 2023, test == 2023
+2026-03-21 22:39:16 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:39:16 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:39:16 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:39:18 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:39:23 | INFO | src.train | Linear Regression CV RMSE=-5982.9521
+2026-03-21 22:39:56 | INFO | src.train | Random Forest best CV RMSE=4930.9738 with params={'model__max_depth': 10, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 50}
+2026-03-21 22:39:56 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=-5982.9521
+2026-03-21 22:39:57 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 22:39:57 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 22:39:57 | INFO | src.evaluate | Regression metrics | RMSE=6875.7336 | MAE=4469.2823 | R2=0.6693
+2026-03-21 22:39:57 | INFO | __main__ | Final score returned (single float)=6875.7336
+2026-03-21 22:39:57 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 22:39:57 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 22:39:57 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 22:39:57 | INFO | __main__ | Train R2=0.7838 | Test R2=0.6693
+2026-03-21 22:39:57 | ERROR | __main__ | Pipeline failed.
+Traceback (most recent call last):
+  File "/mnt/c/Users/Naven/Desktop/IE/17 MLOPS/Git_Repository/1-mlops-kickoff-repo/src/main.py", line 267, in main
+    wandb.log({
+    ~~~~~~~~~^^
+        "test_rmse": score,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        "test_rows": len(X_test),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    })
+    ^^
+  File "/home/naven/miniconda3/envs/mlops-student-env/lib/python3.14/site-packages/wandb/sdk/lib/preinit.py", line 38, in preinit_wrapper
+    raise wandb.Error(f"You must call wandb.init() before {name}()")
+wandb.errors.errors.Error: You must call wandb.init() before wandb.log()
+2026-03-21 22:52:09 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:52:09 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 22:52:09 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 22:52:09 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:52:09 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:52:09 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:52:09 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:52:09 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:52:09 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:52:09 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:52:09 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:52:09 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:52:09 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:52:09 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:52:09 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:52:09 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 22:52:09 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:52:09 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:52:09 | ERROR | src.main | Pipeline failed.
+Traceback (most recent call last):
+  File "/mnt/c/Users/Naven/Desktop/IE/17 MLOPS/Git_Repository/1-mlops-kickoff-repo/src/main.py", line 239, in main
+    model = train_model(
+        X_train=X_train,
+    ...<3 lines>...
+        run=pipeline_run,
+    )
+TypeError: test_main_creates_artifacts_and_predictions_csv.<locals>.fake_train_model() got an unexpected keyword argument 'run'
+2026-03-21 22:52:09 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:52:09 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:52:09 | INFO | src.train | Training model pipeline for problem_type=classification
+2026-03-21 22:52:09 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:52:09 | INFO | src.train | Classification pipeline trained with LogisticRegression.
+2026-03-21 22:52:09 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:52:09 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:52:09 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:52:09 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:52:10 | INFO | src.train | Linear Regression CV RMSE=0.0709
+2026-03-21 22:52:10 | INFO | src.train | Random Forest best CV RMSE=0.3273 with params={'model__max_depth': 10, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 50}
+2026-03-21 22:52:10 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=0.0709
+2026-03-21 22:52:10 | INFO | src.utils | Saving DataFrame to /tmp/pytest-of-naven/pytest-2/test_save_csv_creates_parent_d0/nested/dir/data.csv
+2026-03-21 22:52:10 | INFO | src.utils | Loading CSV from /tmp/pytest-of-naven/pytest-2/test_load_csv_reads_expected_d0/input.csv
+2026-03-21 22:52:10 | INFO | src.utils | Saving model to /tmp/pytest-of-naven/pytest-2/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:52:10 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-2/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:52:10 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-2/test_load_model_raises_if_miss0/does_not_exist.joblib
+2026-03-21 22:52:10 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:52:10 | INFO | src.validate | Validation passed for required columns=['a', 'b']
+2026-03-21 22:52:10 | INFO | src.validate | Validating dataframe with shape=(2, 1)
+2026-03-21 22:52:10 | ERROR | src.validate | Validation failed: missing required columns=['b']
+2026-03-21 22:52:10 | INFO | src.validate | Validating dataframe with shape=(0, 0)
+2026-03-21 22:52:10 | ERROR | src.validate | Validation failed: dataframe is empty. Cannot proceed.
+2026-03-21 22:52:10 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:52:10 | ERROR | src.validate | Validation failed: required columns entirely null=['a']
+2026-03-21 22:53:58 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:53:58 | INFO | src.main | Starting end-to-end pipeline.
+2026-03-21 22:53:58 | INFO | src.main | Started pipeline W&B run.
+2026-03-21 22:53:58 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:53:58 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:53:58 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:53:58 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:53:58 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:53:58 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:53:58 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:53:58 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:53:58 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:53:58 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:53:59 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:53:59 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:53:59 | INFO | src.main | Using year split: train < 2023, test == 2023
+2026-03-21 22:53:59 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:53:59 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:53:59 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 22:53:59 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 22:53:59 | INFO | src.evaluate | Regression metrics | RMSE=11959.1178 | MAE=9865.5784 | R2=-0.0006
+2026-03-21 22:53:59 | INFO | src.main | Final score returned (single float)=11959.1178
+2026-03-21 22:53:59 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 22:53:59 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 22:53:59 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 22:54:01 | INFO | src.main | Train R2=0.0000 | Test R2=-0.0006
+2026-03-21 22:54:01 | INFO | src.main | Pipeline completed successfully.
+2026-03-21 22:54:02 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:54:02 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:54:02 | INFO | src.train | Training model pipeline for problem_type=classification
+2026-03-21 22:54:02 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:54:02 | INFO | src.train | Classification pipeline trained with LogisticRegression.
+2026-03-21 22:54:02 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:54:02 | INFO | src.features | Preprocessor ready. Numeric columns=['num_feature'] | Categorical columns=['cat_feature'] | n_bins placeholder=3
+2026-03-21 22:54:02 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:54:02 | INFO | src.train | Initialized W&B run | project=mlops-kickoff | entity=naven_b-ie-university | job_type=train
+2026-03-21 22:54:02 | INFO | src.train | Linear Regression CV RMSE=0.0709
+2026-03-21 22:54:02 | INFO | src.train | Random Forest best CV RMSE=0.3273 with params={'model__max_depth': 10, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 50}
+2026-03-21 22:54:02 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=0.0709
+2026-03-21 22:54:02 | INFO | src.utils | Saving DataFrame to /tmp/pytest-of-naven/pytest-3/test_save_csv_creates_parent_d0/nested/dir/data.csv
+2026-03-21 22:54:02 | INFO | src.utils | Loading CSV from /tmp/pytest-of-naven/pytest-3/test_load_csv_reads_expected_d0/input.csv
+2026-03-21 22:54:02 | INFO | src.utils | Saving model to /tmp/pytest-of-naven/pytest-3/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:54:02 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-3/test_save_model_and_load_model0/models/nested/model.joblib
+2026-03-21 22:54:02 | INFO | src.utils | Loading model from /tmp/pytest-of-naven/pytest-3/test_load_model_raises_if_miss0/does_not_exist.joblib
+2026-03-21 22:54:02 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:54:02 | INFO | src.validate | Validation passed for required columns=['a', 'b']
+2026-03-21 22:54:02 | INFO | src.validate | Validating dataframe with shape=(2, 1)
+2026-03-21 22:54:02 | ERROR | src.validate | Validation failed: missing required columns=['b']
+2026-03-21 22:54:02 | INFO | src.validate | Validating dataframe with shape=(0, 0)
+2026-03-21 22:54:02 | ERROR | src.validate | Validation failed: dataframe is empty. Cannot proceed.
+2026-03-21 22:54:02 | INFO | src.validate | Validating dataframe with shape=(2, 2)
+2026-03-21 22:54:02 | ERROR | src.validate | Validation failed: required columns entirely null=['a']
+2026-03-21 22:54:28 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 22:54:28 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 22:54:29 | INFO | __main__ | Started pipeline W&B run.
+2026-03-21 22:54:29 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 22:54:29 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 22:54:29 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 22:54:29 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 22:54:29 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 22:54:29 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 22:54:29 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 22:54:29 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 22:54:29 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 22:54:29 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 22:54:29 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 22:54:29 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 22:54:29 | INFO | __main__ | Using year split: train < 2023, test == 2023
+2026-03-21 22:54:29 | INFO | src.features | Building feature preprocessor.
+2026-03-21 22:54:29 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 22:54:29 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 22:54:36 | INFO | src.train | Linear Regression CV RMSE=5982.9521
+2026-03-21 22:55:07 | INFO | src.train | Random Forest best CV RMSE=4930.9738 with params={'model__max_depth': 10, 'model__min_samples_leaf': 1, 'model__min_samples_split': 2, 'model__n_estimators': 50}
+2026-03-21 22:55:07 | INFO | src.train | Selected final regression model=random_forest with CV RMSE=4930.9738
+2026-03-21 22:55:07 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 22:55:07 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 22:55:07 | INFO | src.evaluate | Regression metrics | RMSE=11468.8251 | MAE=8554.9410 | R2=0.0798
+2026-03-21 22:55:07 | INFO | __main__ | Final score returned (single float)=11468.8251
+2026-03-21 22:55:07 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 22:55:07 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 22:55:07 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 22:55:08 | INFO | __main__ | Train R2=0.8625 | Test R2=0.0798
+2026-03-21 22:55:11 | INFO | __main__ | Pipeline completed successfully.
+2026-03-21 23:42:35 | INFO | src.logging | Logging configured. Writing logs to logs/pipeline.log
+2026-03-21 23:42:35 | INFO | __main__ | Starting end-to-end pipeline.
+2026-03-21 23:42:36 | INFO | __main__ | Started pipeline W&B run.
+2026-03-21 23:42:36 | INFO | src.load_data | Loading raw data from data/raw/f1_all.parquet
+2026-03-21 23:42:37 | INFO | src.load_data | Loaded raw dataframe with shape=(69230, 29)
+2026-03-21 23:42:37 | INFO | src.clean_data | Starting dataframe cleaning. Input shape=(69230, 29)
+2026-03-21 23:42:37 | INFO | src.clean_data | Target column 'milliseconds' converted to numeric with coercion.
+2026-03-21 23:42:37 | INFO | src.clean_data | Dropped 553 rows due to missing required values in columns=['TyreLife', 'milliseconds']
+2026-03-21 23:42:37 | INFO | src.clean_data | Dropped configured columns: ['Driver', 'LapNumber', 'time', 'circuitId', 'driverId', 'statusId', 'raceId', 'position_x', 'position_y', 'status', 'AirTemp']
+2026-03-21 23:42:37 | INFO | src.clean_data | Filled missing values in object/string columns with 'UNKNOWN'.
+2026-03-21 23:42:37 | INFO | src.clean_data | Applied IQR outlier trimming on target 'milliseconds'. Removed 2894 rows.
+2026-03-21 23:42:37 | INFO | src.clean_data | Finished cleaning dataframe. Output shape=(65783, 18)
+2026-03-21 23:42:37 | INFO | src.utils | Saving DataFrame to data/processed/clean.csv
+2026-03-21 23:42:37 | INFO | src.validate | Validating dataframe with shape=(65783, 18)
+2026-03-21 23:42:37 | INFO | src.validate | Validation passed for required columns=['milliseconds', 'lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection', 'round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre']
+2026-03-21 23:42:37 | INFO | __main__ | Using year split: train < 2023, test == 2023
+2026-03-21 23:42:37 | INFO | src.features | Building feature preprocessor.
+2026-03-21 23:42:37 | INFO | src.features | Preprocessor ready. Numeric columns=['lap', 'grid', 'Stint', 'TyreLife', 'TrackTemp', 'Humidity', 'Pressure', 'Rainfall', 'WindSpeed', 'WindDirection'] | Categorical columns=['round', 'name', 'constructorId', 'code', 'Compound', 'FreshTyre'] | n_bins placeholder=3
+2026-03-21 23:42:37 | INFO | src.train | Training model pipeline for problem_type=regression
+2026-03-21 23:42:46 | INFO | src.train | Linear Regression CV RMSE=5982.9521
+2026-03-21 23:45:26 | INFO | src.train | Random Forest best CV RMSE=8113.6493 with params={'model__max_depth': 5, 'model__min_samples_leaf': 5, 'model__min_samples_split': 5, 'model__n_estimators': 50}
+2026-03-21 23:45:26 | INFO | src.train | Selected final regression model=linear_regression with CV RMSE=5982.9521
+2026-03-21 23:45:26 | INFO | src.utils | Saving model to models/model.joblib
+2026-03-21 23:45:26 | INFO | src.evaluate | Evaluating model for problem_type=regression on 23523 rows.
+2026-03-21 23:45:27 | INFO | src.evaluate | Regression metrics | RMSE=6875.7336 | MAE=4469.2823 | R2=0.6693
+2026-03-21 23:45:27 | INFO | __main__ | Final score returned (single float)=6875.7336
+2026-03-21 23:45:27 | INFO | src.infer | Running inference on 23523 rows.
+2026-03-21 23:45:27 | INFO | src.infer | Inference complete. Produced prediction dataframe with shape=(23523, 1)
+2026-03-21 23:45:27 | INFO | src.utils | Saving DataFrame to reports/predictions.csv
+2026-03-21 23:45:27 | INFO | __main__ | Train R2=0.7838 | Test R2=0.6693
+2026-03-21 23:45:29 | INFO | __main__ | Pipeline completed successfully.

@@ -4,30 +4,40 @@ Educational Goal:
   (python -m src.main) that runs the pipeline end-to-end reliably.
 - Responsibility (separation of concerns): Orchestrates steps; does not contain
   the detailed logic of cleaning/features/training/evaluation.
-- Pipeline contract (inputs and outputs): Produces three artifacts:
-  - data/processed/clean.csv
-  - models/model.joblib
-  - reports/predictions.csv
+- Pipeline contract (inputs and outputs): Produces pipeline artifacts and logs.
 
-TODO: Replace print statements with standard library logging in a later session
-TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
+This version adds:
+- standard logging instead of print statements
+- optional Weights & Biases experiment tracking using .env credentials
+- model selection for regression handled in train.py
 """
 
 from __future__ import annotations
 
+import logging as pylogging
+import os
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
+from sklearn.metrics import r2_score
 
 from src.clean_data import clean_dataframe
 from src.evaluate import evaluate_model
 from src.features import get_feature_preprocessor
 from src.infer import run_inference
 from src.load_data import load_raw_data
+from src.logging import configure_logging, get_logger
 from src.train import train_model
 from src.utils import save_csv, save_model
 from src.validate import validate_dataframe
-from sklearn.metrics import r2_score
+
+try:
+    import wandb
+except ImportError:  # pragma: no cover - optional runtime dependency
+    wandb = None
+
+logger = get_logger(__name__)
 
 
 def load_config(config_path: Path = Path("config.yaml")) -> dict:
@@ -44,13 +54,66 @@ def load_config(config_path: Path = Path("config.yaml")) -> dict:
     if not config_path.exists():
         raise FileNotFoundError(f"config.yaml not found at: {config_path.resolve()}")
 
-    with config_path.open("r") as f:
+    with config_path.open("r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f) or {}
 
     if not isinstance(cfg, dict) or not cfg:
         raise ValueError("config.yaml is empty or invalid (expected a YAML mapping).")
 
     return cfg
+
+
+def _init_wandb_for_pipeline(cfg: dict):
+    """
+    Initialize a single W&B pipeline run.
+
+    This is intentionally lightweight and optional.
+    The normal training function also opens its own run for model-comparison details,
+    but this run is useful for end-to-end artifact logging.
+    """
+    load_dotenv()
+    wandb_cfg = cfg.get("wandb", {}) or {}
+    if not wandb_cfg.get("enabled", False):
+        return None
+    if wandb is None:
+        logger.warning("wandb package is not installed. Skipping pipeline W&B run.")
+        return None
+
+    api_key = os.getenv(wandb_cfg.get("api_key_env", "WANDB_API_KEY"))
+    entity = os.getenv(wandb_cfg.get("entity_env", "WANDB_ENTITY"))
+    project = wandb_cfg.get("project", "mlops-project")
+    if not api_key or not entity:
+        logger.warning("Missing W&B credentials in .env. Skipping pipeline W&B run.")
+        return None
+
+    os.environ.setdefault("WANDB_API_KEY", api_key)
+    os.environ.setdefault("WANDB_ENTITY", entity)
+
+    run = wandb.init(
+        project=project,
+        entity=entity,
+        job_type="pipeline",
+        config=cfg,
+        reinit="finish_previous",
+        settings=wandb.Settings(
+            console="off",
+            silent=True,
+        ),
+    )
+    logger.info("Started pipeline W&B run.")
+    return run
+
+
+def _log_artifacts_to_wandb(run, cfg: dict, model_path: Path, processed_path: Path, predictions_path: Path):
+    if run is None:
+        return
+
+    artifact = wandb.Artifact("pipeline_outputs", type="pipeline-output")
+    for path in [model_path, processed_path, predictions_path]:
+        if Path(path).exists():
+            artifact.add_file(str(path))
+    run.log_artifact(artifact)
+
 
 
 def main() -> None:
@@ -62,9 +125,16 @@ def main() -> None:
     Why this contract matters for reliable ML delivery:
     - A single script entry point makes runs reproducible and CI-friendly.
     """
-    print("[main.main] Starting end-to-end pipeline...")  # TODO: replace with logging later
-
     cfg = load_config()
+
+    # Configure logging as early as possible so all subsequent steps are captured.
+    logging_cfg = cfg.get("logging", {}) or {}
+    log_path = configure_logging(
+        log_file=logging_cfg.get("file_path", "logs/pipeline.log"),
+        level=logging_cfg.get("level", "INFO"),
+    )
+
+    logger.info("Starting end-to-end pipeline.")
 
     # Ensure required directories exist (idempotent)
     Path("data/processed").mkdir(parents=True, exist_ok=True)
@@ -111,97 +181,123 @@ def main() -> None:
     quantile_bin_cols = feat_cfg.get("quantile_bin", [])
     n_bins = feat_cfg.get("n_bins", 3)
 
-    # 1) Load raw data
-    df_raw = load_raw_data(raw_path)
+    pipeline_run = _init_wandb_for_pipeline(cfg)
 
-    # 2) Clean data
-    df_clean = clean_dataframe(df_raw, target_column=target_column)
+    try:
+        # 1) Load raw data
+        df_raw = load_raw_data(raw_path)
 
-    # 3) Save processed CSV artifact
-    save_csv(df_clean, processed_path)
+        # 2) Clean data
+        df_clean = clean_dataframe(df_raw, target_column=target_column)
 
-    # 4) Validate schema
-    required_columns = [target_column] + list(numeric_cols) + list(categorical_cols)
-    validate_dataframe(df_clean, required_columns=required_columns)
+        # 3) Save processed CSV artifact
+        save_csv(df_clean, processed_path)
 
-    # 5) Year-based split (REQUIRED)
-    if year_column not in df_clean.columns:
-        raise ValueError(
-            f"Year split required, but year column '{year_column}' not found in cleaned dataframe."
+        # 4) Validate schema
+        required_columns = [target_column] + list(numeric_cols) + list(categorical_cols)
+        validate_dataframe(df_clean, required_columns=required_columns)
+
+        # 5) Year-based split (REQUIRED)
+        if year_column not in df_clean.columns:
+            raise ValueError(
+                f"Year split required, but year column '{year_column}' not found in cleaned dataframe."
+            )
+
+        logger.info("Using year split: train < %s, test == %s", test_year, test_year)
+        df_train = df_clean[df_clean[year_column] < test_year].copy()
+        df_test = df_clean[df_clean[year_column] == test_year].copy()
+
+        if df_train.empty:
+            raise ValueError(
+                f"Year split produced empty TRAIN set. No rows where {year_column} < {test_year}."
+            )
+        if df_test.empty:
+            raise ValueError(
+                f"Year split produced empty TEST set. No rows where {year_column} == {test_year}."
+            )
+
+        X_train = df_train.drop(columns=[target_column])
+        y_train = df_train[target_column]
+        X_test = df_test.drop(columns=[target_column])
+        y_test = df_test[target_column]
+
+        # 6) Fail-fast feature presence checks
+        configured_cols = list(numeric_cols) + list(categorical_cols)
+        missing_feats = [c for c in configured_cols if c not in X_train.columns]
+        if missing_feats:
+            raise ValueError(f"Configured feature columns missing from training data: {missing_feats}")
+
+        # 7) Build preprocessing recipe (unfitted)
+        preprocessor = get_feature_preprocessor(
+            quantile_bin_cols=quantile_bin_cols,
+            categorical_onehot_cols=categorical_cols,
+            numeric_passthrough_cols=numeric_cols,
+            n_bins=n_bins,
         )
 
-    print(f"[main.main] Using year split: train < {test_year}, test == {test_year}")  # TODO: replace with logging later
-    df_train = df_clean[df_clean[year_column] < test_year].copy()
-    df_test = df_clean[df_clean[year_column] == test_year].copy()
-
-    if df_train.empty:
-        raise ValueError(
-            f"Year split produced empty TRAIN set. No rows where {year_column} < {test_year}."
-        )
-    if df_test.empty:
-        raise ValueError(
-            f"Year split produced empty TEST set. No rows where {year_column} == {test_year}."
+        # 8) Train model (Pipeline fits preprocess ONLY on train -> leakage-safe)
+        model = train_model(
+            X_train=X_train,
+            y_train=y_train,
+            preprocessor=preprocessor,
+            problem_type=problem_type,
+            run=pipeline_run,
         )
 
-    X_train = df_train.drop(columns=[target_column])
-    y_train = df_train[target_column]
-    X_test = df_test.drop(columns=[target_column])
-    y_test = df_test[target_column]
+        # 9) Save model artifact
+        save_model(model, model_path)
 
-    # 6) Fail-fast feature presence checks
-    configured_cols = list(numeric_cols) + list(categorical_cols)
-    missing_feats = [c for c in configured_cols if c not in X_train.columns]
-    if missing_feats:
-        raise ValueError(f"Configured feature columns missing from training data: {missing_feats}")
+        # 10) Evaluate
+        score = evaluate_model(model, X_test=X_test, y_test=y_test, problem_type=problem_type)
+        logger.info("Final score returned (single float)=%.4f", score)
 
-    # 7) Build preprocessing recipe (unfitted)
-    preprocessor = get_feature_preprocessor(
-        quantile_bin_cols=quantile_bin_cols,
-        categorical_onehot_cols=categorical_cols,
-        numeric_passthrough_cols=numeric_cols,
-        n_bins=n_bins,
-    )
+        # 11) Inference (example: run on X_test)
+        df_pred = run_inference(model, X_infer=X_test)
 
-    # 8) Train model (Pipeline fits preprocess ONLY on train -> leakage-safe)
-    model = train_model(
-        X_train=X_train,
-        y_train=y_train,
-        preprocessor=preprocessor,
-        problem_type=problem_type,
-    )
+        # 12) Save predictions artifact
+        save_csv(df_pred, predictions_path)
 
-    # 9) Save model artifact
-    save_model(model, model_path)
+        train_preds = model.predict(X_train)
+        test_preds = model.predict(X_test)
 
-    # 10) Evaluate
-    score = evaluate_model(model, X_test=X_test, y_test=y_test, problem_type=problem_type)
-    print(f"[main.main] Final score returned (single float): {score:.4f}")  # TODO: replace with logging later
+        if problem_type == "regression":
+            train_r2 = float(r2_score(y_train, train_preds))
+            test_r2 = float(r2_score(y_test, test_preds))
+            logger.info("Train R2=%.4f | Test R2=%.4f", train_r2, test_r2)
+            if pipeline_run is not None:
+                if pipeline_run is not None:
+                    pipeline_run.log({
+                        "test_rmse": score,
+                        "train_r2": r2_score(y_train, train_preds),
+                        "test_r2": r2_score(y_test, test_preds),
+                        "test_rows": len(X_test),
+                    })
+        elif pipeline_run is not None:
+            wandb.log({"test_score": score, "train_rows": len(X_train), "test_rows": len(X_test)})
 
-    # 11) Inference (example: run on X_test)
-    df_pred = run_inference(model, X_infer=X_test)
+        _log_artifacts_to_wandb(
+            pipeline_run,
+            cfg=cfg,
+            model_path=model_path,
+            processed_path=processed_path,
+            predictions_path=predictions_path,
+        )
 
-    # 12) Save predictions artifact
-    save_csv(df_pred, predictions_path)
+        logger.info("Pipeline completed successfully.")
 
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # TODO_STUDENT: Add richer reporting (feature importances, experiment tracking)
-    # Why: Production systems need traceability and monitoring signals.
-    #
-    # Placeholder (Remove this after implementing your code):
-    print("Warning: Student has not implemented this section yet")
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
+    except Exception:
+        logger.exception("Pipeline failed.")
+        if pipeline_run is not None:
+            wandb.alert(title="Pipeline failed", text="Check uploaded logs for details.")
+        raise
+    finally:
+        if pipeline_run is not None:
+            pipeline_run.finish()
+            pylogging.shutdown()
 
-    print("[main.main] Pipeline completed successfully.")  # TODO: replace with logging later
+    if pipeline_run is not None:
+        pipeline_run.finish()
 
-    train_preds = model.predict(X_train)
-    test_preds = model.predict(X_test)
-
-    print("Train R2:", r2_score(y_train, train_preds))
-    print("Test  R2:", r2_score(y_test, test_preds))
 
 if __name__ == "__main__":
     main()
