@@ -44,7 +44,21 @@ def test_main_creates_artifacts_and_predictions_csv(monkeypatch):
             ]
         )
         model.fit(X_train, y_train)
-        return model
+
+        return {
+            "selected_model": model,
+            "selected_name": "dummy_regressor",
+            "selected_score": 0.0,
+            "candidate_models": {
+                "dummy_regressor": model,
+            },
+            "candidate_metrics": {
+                "dummy_regressor": {
+                    "cv_rmse": 0.0,
+                    "params": {"strategy": "mean"},
+                }
+            },
+        }
 
     monkeypatch.setattr(main_module, "train_model", fake_train_model)
 

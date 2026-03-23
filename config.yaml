@@ -110,6 +110,8 @@ wandb:
   # These variable names are read from your .env file.
   api_key_env: "WANDB_API_KEY"
   entity_env: "WANDB_ENTITY"
+  model_registry_name: laptime-model
+  prod_candidate_name: laptime-model-linear_regression
 
   watch_paths:
     reports_dir: "reports"

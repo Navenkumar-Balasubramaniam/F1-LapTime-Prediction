@@ -1,9 +1,9 @@
 """Unit tests for ``src.train.train_model``.
 
-These tests were updated to support the new regression training flow:
+These tests support the updated training contract:
 - classification still trains a single logistic-regression pipeline
-- regression now compares Linear Regression vs Random Forest and returns the
-  best fitted pipeline based on cross-validated RMSE
+- regression compares Linear Regression vs Random Forest and returns
+  the selected model plus candidate-model metadata
 """
 
 from __future__ import annotations
@@ -15,7 +15,8 @@ from src.features import get_feature_preprocessor
 from src.train import train_model
 
 
-def make_dummy_data(n: int = 50):
+def make_dummy_data(n: int = 20):
+    """Create a small synthetic dataset for train-model unit tests."""
     rng = np.random.default_rng(42)
 
     X = pd.DataFrame(
@@ -41,7 +42,20 @@ def test_train_model_fits_and_predicts_classification():
         n_bins=3,
     )
 
-    model = train_model(X_train=X, y_train=y_cls, preprocessor=preprocessor, problem_type="classification")
+    result = train_model(
+        X_train=X,
+        y_train=y_cls,
+        preprocessor=preprocessor,
+        problem_type="classification",
+    )
+
+    assert isinstance(result, dict)
+    assert "selected_model" in result
+    assert "selected_name" in result
+    assert "candidate_models" in result
+    assert "candidate_metrics" in result
+
+    model = result["selected_model"]
 
     assert hasattr(model, "predict")
     assert "preprocess" in model.named_steps
@@ -50,6 +64,9 @@ def test_train_model_fits_and_predicts_classification():
     preds = model.predict(X)
     assert preds.shape == (len(X),)
     assert np.unique(preds).size >= 1
+
+    assert result["selected_name"] == "logistic_regression"
+    assert "logistic_regression" in result["candidate_models"]
 
 
 def test_train_model_fits_and_predicts_regression_with_best_pipeline_selection():
@@ -62,7 +79,21 @@ def test_train_model_fits_and_predicts_regression_with_best_pipeline_selection()
         n_bins=3,
     )
 
-    model = train_model(X_train=X, y_train=y_reg, preprocessor=preprocessor, problem_type="regression")
+    result = train_model(
+        X_train=X,
+        y_train=y_reg,
+        preprocessor=preprocessor,
+        problem_type="regression",
+    )
+
+    assert isinstance(result, dict)
+    assert "selected_model" in result
+    assert "selected_name" in result
+    assert "selected_score" in result
+    assert "candidate_models" in result
+    assert "candidate_metrics" in result
+
+    model = result["selected_model"]
 
     assert hasattr(model, "predict")
     assert "preprocess" in model.named_steps
@@ -77,3 +108,15 @@ def test_train_model_fits_and_predicts_regression_with_best_pipeline_selection()
     # internal implementation detail.
     model_name = model.named_steps["model"].__class__.__name__
     assert model_name in {"LinearRegression", "RandomForestRegressor"}
+
+    # Ensure both regression candidates are tracked in the returned metadata.
+    assert "linear_regression" in result["candidate_models"]
+    assert "linear_regression" in result["candidate_metrics"]
+
+    # Random Forest may be disabled in config, so only assert conditionally.
+    if "random_forest" in result["candidate_models"]:
+        assert "random_forest" in result["candidate_metrics"]
+
+    assert result["selected_name"] in {"linear_regression", "random_forest"}
+    assert result["selected_score"] is not None
+    assert isinstance(result["selected_score"], float)
