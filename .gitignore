@@ -50,9 +50,26 @@ reports/**
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
 
 # Conda / installers / local environment stuff
 Miniconda3-latest-Linux-x86_64.sh
 miniconda3/
 *.conda
 
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+
+# =========================
+# W&B
+# =========================
+wandb/
+artifacts/

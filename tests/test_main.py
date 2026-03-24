@@ -1,19 +1,16 @@
 """
-Integration test for src.main.main.
+Lightweight integration test for src.main.main.
 
-This test:
-- runs the end-to-end pipeline via main.main()
-- asserts required artifacts exist:
-    - data/processed/clean.csv
-    - models/model.joblib
-    - reports/predictions.csv
-- verifies that reports/predictions.csv is a non-empty CSV with a single column "prediction"
+This test verifies pipeline orchestration and artifact creation
+without running expensive real model training.
 """
 
 from pathlib import Path
 
 import pandas as pd
 import yaml
+from sklearn.dummy import DummyRegressor
+from sklearn.pipeline import Pipeline
 
 import src.main as main_module
 
@@ -31,33 +28,56 @@ def load_config():
         return yaml.safe_load(f) or {}
 
 
-def test_main_creates_artifacts_and_predictions_csv():
+def test_main_creates_artifacts_and_predictions_csv(monkeypatch):
     cfg = load_config()
     target_col = cfg["task"]["target_column"]
 
-    # Preconditions: raw parquet must exist (otherwise integration test can't run)
     raw_path = Path(cfg["data"]["raw_path"])
     assert raw_path.exists(), f"Raw data parquet not found at {raw_path}. Cannot run integration test."
 
-    # 1) Run pipeline
+    # Replace expensive training with a tiny dummy regressor pipeline.
+    def fake_train_model(X_train, y_train, preprocessor, problem_type, run=None):
+        model = Pipeline(
+            steps=[
+                ("preprocess", preprocessor),
+                ("model", DummyRegressor(strategy="mean")),
+            ]
+        )
+        model.fit(X_train, y_train)
+
+        return {
+            "selected_model": model,
+            "selected_name": "dummy_regressor",
+            "selected_score": 0.0,
+            "candidate_models": {
+                "dummy_regressor": model,
+            },
+            "candidate_metrics": {
+                "dummy_regressor": {
+                    "cv_rmse": 0.0,
+                    "params": {"strategy": "mean"},
+                }
+            },
+        }
+
+    monkeypatch.setattr(main_module, "train_model", fake_train_model)
+
+    # Run pipeline
     main_module.main()
 
-    # 2) Assert artifacts exist
+    # Assert artifacts exist
     assert ARTIFACTS["processed"].exists(), f"Missing artifact: {ARTIFACTS['processed']}"
     assert ARTIFACTS["model"].exists(), f"Missing artifact: {ARTIFACTS['model']}"
     assert ARTIFACTS["predictions"].exists(), f"Missing artifact: {ARTIFACTS['predictions']}"
 
-    # 3) Load and sanity-check processed CSV
+    # Processed CSV checks
     df_processed = pd.read_csv(ARTIFACTS["processed"])
     assert not df_processed.empty, "Processed CSV should not be empty"
     assert target_col in df_processed.columns, f"Processed data must contain target column '{target_col}'"
 
-    # 4) Load and sanity-check predictions CSV
+    # Predictions CSV checks
     df_preds = pd.read_csv(ARTIFACTS["predictions"])
     assert not df_preds.empty, "Predictions CSV should not be empty"
     assert list(df_preds.columns) == ["prediction"], "Predictions CSV must have exactly one column named 'prediction'"
 
-    # 5) prediction count should equal test-set rows (since your main runs inference on X_test)
-    # Since X_test is built from df_test (year == test_year), it should match df_preds length.
-    # The processed CSV includes train+test rows, so df_preds should be <= df_processed
     assert len(df_preds) <= len(df_processed), "Predictions rows cannot exceed processed data rows"

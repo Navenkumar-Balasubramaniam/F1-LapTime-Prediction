@@ -7,13 +7,16 @@ Educational Goal:
 - Pipeline contract (inputs and outputs): Takes a fitted model and feature data;
   returns a DataFrame with one column: "prediction", preserving index.
 
-TODO: Replace print statements with standard library logging in a later session
-TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
+This version logs the inference flow so debugging prediction issues is easier.
 """
 
 from __future__ import annotations
 
 import pandas as pd
+
+from src.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 def run_inference(model, X_infer: pd.DataFrame) -> pd.DataFrame:
@@ -26,7 +29,7 @@ def run_inference(model, X_infer: pd.DataFrame) -> pd.DataFrame:
     Why this contract matters for reliable ML delivery:
     - Standard output format makes downstream consumption (reports/APIs) predictable.
     """
-    print("[infer.run_inference] Running inference...")  # TODO: replace with logging later
+    logger.info("Running inference on %s rows.", len(X_infer))
 
     preds = model.predict(X_infer)
     df_pred = pd.DataFrame({"prediction": preds}, index=X_infer.index)
@@ -34,9 +37,9 @@ def run_inference(model, X_infer: pd.DataFrame) -> pd.DataFrame:
     # --------------------------------------------------------
     # START STUDENT CODE
     # --------------------------------------------------------
-    # TODO_STUDENT: Add post-processing (rounding, clipping, inverse transforms).
-    # Why: Many business systems require bounded or formatted outputs.
-    #
+    # Post-processing can be added here later if the business problem requires
+    # rounded outputs, clipped values, inverse transforms, or label mapping.
+    logger.info("Inference complete. Produced prediction dataframe with shape=%s", df_pred.shape)
     # --------------------------------------------------------
     # END STUDENT CODE
     # --------------------------------------------------------

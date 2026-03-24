@@ -1,0 +1,25 @@
+{
+  "os": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "CPython 3.14.3",
+  "startedAt": "2026-03-21T21:15:57.804257Z",
+  "program": "-m src.main",
+  "git": {
+    "remote": "git@github.com:Navenkumar-Balasubramaniam/1-mlops-kickoff-repo.git",
+    "commit": "5f91d0e67127f3eeca97a963e33cd1e0d23c243b"
+  },
+  "root": "/mnt/c/Users/Naven/Desktop/IE/17 MLOPS/Git_Repository/1-mlops-kickoff-repo",
+  "host": "DESKTOP-OF65EA8",
+  "executable": "/home/naven/miniconda3/envs/mlops-student-env/bin/python",
+  "cpu_count": 8,
+  "cpu_count_logical": 16,
+  "disk": {
+    "/": {
+      "total": "1081101176832",
+      "used": "6289645568"
+    }
+  },
+  "memory": {
+    "total": "8162308096"
+  },
+  "writerId": "zbqb2655hqt9i66u7vu97sqkd3vant5s"
+}

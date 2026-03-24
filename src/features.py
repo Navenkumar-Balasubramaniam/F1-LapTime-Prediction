@@ -7,8 +7,8 @@ Educational Goal:
 - Pipeline contract (inputs and outputs): Returns a scikit-learn ColumnTransformer
   that is NOT fit here (fitting happens on training data only in train.py).
 
-TODO: Replace print statements with standard library logging in a later session
-TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
+This version logs what it builds so readers can understand the preprocessing
+contract without needing to step through the code in a debugger.
 """
 
 from __future__ import annotations
@@ -17,6 +17,10 @@ from typing import List, Optional
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+from src.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 def get_feature_preprocessor(
@@ -37,7 +41,7 @@ def get_feature_preprocessor(
     - A reusable preprocessing recipe prevents train/serve skew and
       reduces leakage risk by fitting only on training data.
     """
-    print("[features.get_feature_preprocessor] Building feature preprocessor...")  # TODO: replace with logging later
+    logger.info("Building feature preprocessor.")
 
     quantile_bin_cols = quantile_bin_cols or []
     categorical_onehot_cols = categorical_onehot_cols or []
@@ -45,7 +49,7 @@ def get_feature_preprocessor(
 
     # StandardScaler-only approach:
     # We'll treat BOTH numeric_passthrough_cols and quantile_bin_cols as numeric-to-scale,
-    # because your notebook uses StandardScaler (not KBinsDiscretizer).
+    # because the current notebook uses StandardScaler (not KBinsDiscretizer).
     numeric_to_scale = list(dict.fromkeys(numeric_passthrough_cols + quantile_bin_cols))
 
     # Required compatibility pattern for OneHotEncoder across sklearn versions
@@ -67,15 +71,18 @@ def get_feature_preprocessor(
     # --------------------------------------------------------
     # START STUDENT CODE
     # --------------------------------------------------------
-    # TODO_STUDENT: Add/modify transformers (imputation, custom encoders, etc.)
-    # Why: Feature engineering is highly dataset-dependent.
+    # This project keeps the preprocessing intentionally simple so the flow is
+    # easy to read:
+    # - numeric features are standardized
+    # - categorical features are one-hot encoded
     #
-    # Examples:
-    # 1) Add SimpleImputer for missing numeric values
-    # 2) Swap encoder to target encoding
-    #
-    # Placeholder (Remove this after implementing your code):
-    print("Warning: Student has not implemented this section yet")
+    # More advanced steps such as imputation or custom encoders can be added later.
+    logger.info(
+        "Preprocessor ready. Numeric columns=%s | Categorical columns=%s | n_bins placeholder=%s",
+        numeric_to_scale,
+        categorical_onehot_cols,
+        n_bins,
+    )
     # --------------------------------------------------------
     # END STUDENT CODE
     # --------------------------------------------------------
