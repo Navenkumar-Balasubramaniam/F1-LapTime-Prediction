@@ -8,7 +8,8 @@ Educational Goal:
   returns fitted sklearn Pipeline artifacts plus model-selection metadata.
 
 This version adds:
-- Linear Regression as a baseline model
+- Ridge Regression as a baseline model (replaces plain LinearRegression to prevent
+  numerically unstable coefficients when OHE produces many correlated columns)
 - Random Forest Regressor with GridSearchCV
 - Simple model selection using the lowest RMSE
 - Optional Weights & Biases sweep support for Random Forest
@@ -28,7 +29,7 @@ import yaml
 from dotenv import load_dotenv
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.feature_selection import SelectFromModel
-from sklearn.linear_model import LassoCV, LinearRegression, LogisticRegression
+from sklearn.linear_model import LassoCV, LinearRegression, LogisticRegression, Ridge
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.pipeline import Pipeline
@@ -95,7 +96,7 @@ def _build_regression_pipeline(preprocessor, reg_cfg: dict, random_state: int, e
 
     # Lasso-based feature selection is useful for linear models but not ideal for
     # tree models. We therefore enable it only for estimators that are linear-ish.
-    if use_lasso and isinstance(estimator, LinearRegression):
+    if use_lasso and isinstance(estimator, (LinearRegression, Ridge)):
         lasso_cfg = reg_cfg.get("lasso", {})
         selector = SelectFromModel(
             estimator=LassoCV(
@@ -365,10 +366,13 @@ def train_model(
         cv = KFold(n_splits=cv_folds, shuffle=True, random_state=random_state)
 
         # ---------------------------------------------------------
-        # Candidate 1: Linear Regression baseline
+        # Candidate 1: Ridge Regression baseline
+        # Ridge adds L2 regularisation to prevent extreme coefficients
+        # when OHE produces many correlated columns (plain LinearRegression
+        # can become numerically unstable in that setting).
         # ---------------------------------------------------------
-        lr_params = reg_cfg.get("linear_regression") or {}
-        linear_estimator = LinearRegression(**lr_params)
+        ridge_params = reg_cfg.get("ridge") or {}
+        linear_estimator = Ridge(**ridge_params)
         linear_pipeline = _build_regression_pipeline(
             preprocessor=preprocessor,
             reg_cfg=reg_cfg,
@@ -379,12 +383,12 @@ def train_model(
         linear_rmse = cross_val_score_neg_rmse(linear_pipeline, X_train, y_train, cv)
 
         logger.info("Linear Regression CV RMSE=%.4f", linear_rmse)
-        _log_model_summary_to_wandb(run, "linear_regression", linear_rmse, lr_params)
+        _log_model_summary_to_wandb(run, "linear_regression", linear_rmse, ridge_params)
 
         candidate_models["linear_regression"] = linear_pipeline
         candidate_metrics["linear_regression"] = {
             "cv_rmse": linear_rmse,
-            "params": lr_params,
+            "params": ridge_params,
         }
 
         # ---------------------------------------------------------

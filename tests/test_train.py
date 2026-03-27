@@ -107,7 +107,7 @@ def test_train_model_fits_and_predicts_regression_with_best_pipeline_selection()
     # RandomForestRegressor. The test therefore checks behavior, not one exact
     # internal implementation detail.
     model_name = model.named_steps["model"].__class__.__name__
-    assert model_name in {"LinearRegression", "RandomForestRegressor"}
+    assert model_name in {"Ridge", "LinearRegression", "RandomForestRegressor"}
 
     # Ensure both regression candidates are tracked in the returned metadata.
     assert "linear_regression" in result["candidate_models"]
